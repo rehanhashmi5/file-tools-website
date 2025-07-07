@@ -1,13 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Image to PDF</title>
-</head>
-<body style="font-family: sans-serif; padding: 20px;">
-  <h2>Image to PDF Converter</h2>
-  <p>This tool is under construction. You can use this for now:</p>
-  <a href="https://www.ilovepdf.com/jpg_to_pdf" target="_blank">iLovePDF - JPG to PDF</a><br><br>
-  <a href="../index.html">⬅️ Back to Home</a>
-</body>
-</html>
+#!/usr/bin/env python3
+"""
+image_to_pdf.py - Convert images to PDF files
+
+Usage:
+    image_to_pdf.py <input_path> [<output_path>] [--quality=<quality>]
+
+Options:
+    -h --help           Show this help
+    --quality=<quality> Output quality (1-100) [default: 90]
+"""
+
+import os
+import sys
+from PIL import Image
+from docopt import docopt
+
+def convert_images_to_pdf(input_path, output_path=None, quality=90):
+    """
+    Convert image(s) to PDF
+    
+    Args:
+        input_path: Path to image file or directory containing images
+        output_path: Output PDF path (optional)
+        quality: JPEG quality (1-100)
+    """
+    # Validate quality
+    quality = max(1, min(100, quality))
+    
+    # Determine input type (file or directory)
+    if os.path.isfile(input_path):
+        images = [input_path]
+        default_output = os.path.splitext(input_path)[0] + '.pdf'
+    elif os.path.isdir(input_path):
+        images = [
+            os.path.join(input_path, f) 
+            for f in os.listdir(input_path) 
+            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))
+        ]
+        default_output = os.path.join(input_path, 'output.pdf')
+    else:
+        raise ValueError(f"Input path not found: {input_path}")
+    
+    if not images:
+        raise ValueError("No valid images found to convert")
+    
+    # Set default output path if not provided
+    if output_path is None:
+        output_path = default_output
+    
+    # Convert images to PDF
+    try:
+        img_list = [Image.open(img).convert('RGB') for img in images]
+        if len(img_list) == 1:
+            img_list[0].save(output_path, "PDF", quality=quality)
+        else:
+            img_list[0].save(
+                output_path, "PDF", quality=quality,
+                save_all=True, append_images=img_list[1:]
+            )
+        print(f"Successfully created PDF: {output_path}")
+    except Exception as e:
+        print(f"Error converting images to PDF: {e}", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == '__main__':
+    args = docopt(__doc__)
+    try:
+        convert_images_to_pdf(
+            args['<input_path>'],
+            args['<output_path>'],
+            int(args['--quality'])
+        )
+    except ValueError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
