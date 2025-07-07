@@ -1,45 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>File Tools Hub</title>
-  <!-- Tailwind CSS for basic styling -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Simple File Tools</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Enable dark mode in Tailwind
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
 </head>
-<body class="bg-gray-100 text-gray-900 font-sans">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
 
-  <header class="bg-blue-600 p-6 text-white text-center text-3xl font-bold">
-    File Tools Hub
+  <!-- Header -->
+  <header class="flex justify-between items-center p-6 max-w-5xl mx-auto">
+    <h1 class="text-3xl font-bold">📂 Simple File Tools</h1>
+    <div class="flex gap-4 items-center">
+      <!-- Search Bar -->
+      <input type="text" id="search" placeholder="Search tools..." class="p-2 rounded border dark:bg-gray-800 border-gray-400 dark:border-gray-700 focus:outline-none" />
+      <!-- Dark Mode Toggle -->
+      <button onclick="toggleDarkMode()" class="px-3 py-2 bg-gray-300 dark:bg-gray-700 rounded">
+        🌗
+      </button>
+    </div>
   </header>
 
-  <main class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-    <a href="tools/pdf-to-word.html" class="bg-white shadow-md p-4 rounded hover:bg-blue-100 text-center text-xl">
+  <!-- Main Section -->
+  <main id="toolGrid" class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+    <a href="tools/pdf-to-word.html" class="tool bg-white dark:bg-gray-800 shadow-md p-4 rounded hover:bg-blue-100 dark:hover:bg-gray-700 text-center text-xl">
       📄 PDF to Word
     </a>
-    <a href="tools/image-compress.html" class="bg-white shadow-md p-4 rounded hover:bg-blue-100 text-center text-xl">
+    <a href="tools/image-compress.html" class="tool bg-white dark:bg-gray-800 shadow-md p-4 rounded hover:bg-blue-100 dark:hover:bg-gray-700 text-center text-xl">
       🖼️ Image Compressor
     </a>
+    <a href="tools/text-to-pdf.html" class="tool bg-white dark:bg-gray-800 shadow-md p-4 rounded hover:bg-blue-100 dark:hover:bg-gray-700 text-center text-xl">
+      📝 Text to PDF
+    </a>
+    <a href="tools/text-to-speech.html" class="tool bg-white dark:bg-gray-800 shadow-md p-4 rounded hover:bg-blue-100 dark:hover:bg-gray-700 text-center text-xl">
+      🔊 Text to Speech
+    </a>
+    <a href="tools/image-to-pdf.html" class="tool bg-white dark:bg-gray-800 shadow-md p-4 rounded hover:bg-blue-100 dark:hover:bg-gray-700 text-center text-xl">
+      📸 Image to PDF
+    </a>
+    <a href="tools/zip-extractor.html" class="tool bg-white dark:bg-gray-800 shadow-md p-4 rounded hover:bg-blue-100 dark:hover:bg-gray-700 text-center text-xl">
+      📁 ZIP Extractor
+    </a>
+    <a href="tools/pdf-password-remove.html" class="tool bg-white dark:bg-gray-800 shadow-md p-4 rounded hover:bg-blue-100 dark:hover:bg-gray-700 text-center text-xl">
+      🔐 PDF Unlocker
+    </a>
   </main>
-<a href="tools/text-to-pdf.html" class="bg-white shadow-md p-4 rounded hover:bg-blue-100 text-center text-xl">
-  📝 Text to PDF
-</a>
-<a href="tools/text-to-speech.html" class="bg-white shadow-md p-4 rounded hover:bg-blue-100 text-center text-xl">
-  🔊 Text to Speech
-</a>
-<a href="tools/image-to-pdf.html" class="bg-white shadow-md p-4 rounded hover:bg-blue-100 text-center text-xl">
-  📸 Image to PDF
-</a>
-<a href="tools/zip-extractor.html" class="bg-white shadow-md p-4 rounded hover:bg-blue-100 text-center text-xl">
-  📁 ZIP Extractor
-</a>
-<a href="tools/pdf-password-remove.html" class="bg-white shadow-md p-4 rounded hover:bg-blue-100 text-center text-xl">
-  🔐 PDF Unlocker
-</a>
-  
-  <footer class="bg-gray-200 text-center p-4 mt-8 text-sm">
-    © 2025 File Tools Hub. Made with ❤️ by YourName
-  </footer>
 
+  <script>
+    // Dark mode toggle logic
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    // Search/filter functionality
+    const searchInput = document.getElementById('search');
+    const tools = document.querySelectorAll('.tool');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      tools.forEach(tool => {
+        const text = tool.textContent.toLowerCase();
+        tool.style.display = text.includes(query) ? 'block' : 'none';
+      });
+    });
+  </script>
 </body>
 </html>
+
